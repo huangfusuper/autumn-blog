@@ -3,7 +3,7 @@ package com.autumn.utils;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.yunye.common.dto.IpAddressDto;
+import com.autumn.dto.IpAddressDto;
 import lombok.extern.slf4j.Slf4j;
 
 import javax.servlet.http.HttpServletRequest;

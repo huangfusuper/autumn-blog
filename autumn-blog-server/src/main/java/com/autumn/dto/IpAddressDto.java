@@ -1,4 +1,4 @@
-package com.yunye.common.dto;
+package com.autumn.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

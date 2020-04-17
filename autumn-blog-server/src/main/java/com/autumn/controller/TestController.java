@@ -1,8 +1,8 @@
 package com.autumn.controller;
 
+import com.autumn.dto.UserLoginDto;
 import com.autumn.utils.RedisCacheUtil;
 import com.autumn.utils.TokenUtil;
-import com.yunye.common.dto.UserLoginDto;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;

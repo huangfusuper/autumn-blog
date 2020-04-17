@@ -1,0 +1,28 @@
+spring:
+  redis:
+    host: 192.168.199.163
+    port: 6379
+    password:
+    timeout: 100
+    database: 0
+    jedis:
+      pool:
+        # 连接池最大连接数（使用负值表示没有限制）
+        max-active: 1000
+        # 连接池中的最大空闲连接
+        max-idle: 100
+        # 连接池中的最小空闲连接
+        min-idle: 10
+        # 连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: 3000
+
+# token加密的配置
+token:
+  secret: 56eL5aSp5piv5LiA5Liq5b6I5aW955qE5a2j6IqCLOaIkeW+iOWWnOasou+8geS4jeWGt+S4jeeDre+8gQ==
+  name: loginToken
+  timeout: 1800000
+
+ip:
+  appKey: e24e51fb4f3b91f1059779b9b7c1d543
+
+

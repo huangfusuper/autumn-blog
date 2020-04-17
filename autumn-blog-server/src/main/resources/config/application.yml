@@ -1,0 +1,7 @@
+server:
+  port: 8080
+blog:
+  version: 1.0.0
+spring:
+  profiles:
+    active: dev

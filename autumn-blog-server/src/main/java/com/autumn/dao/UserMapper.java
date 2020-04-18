@@ -1,6 +1,6 @@
 package com.autumn.dao;
 
-import com.yunye.dao.BaseDao;
+import com.yunye.dao.BaseMapper;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -8,5 +8,5 @@ import org.springframework.stereotype.Repository;
  * @author huangfu
  */
 @Repository
-public interface UserDao extends BaseDao {
+public interface UserMapper extends BaseMapper {
 }

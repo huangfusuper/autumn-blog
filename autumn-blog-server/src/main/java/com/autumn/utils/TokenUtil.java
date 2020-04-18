@@ -42,9 +42,7 @@ public class TokenUtil {
         this.redisCacheUtil = redisCacheUtil;
     }
 
-    public String genToken(User user){
-        UserLoginDto userLoginDto = new UserLoginDto();
-        userLoginDto.setUser(user);
+    public String genToken(UserLoginDto userLoginDto){
         long startTime = System.currentTimeMillis();
         userLoginDto.setLoginTime(startTime);
         userLoginDto.setExpireTime(startTime + timeout);

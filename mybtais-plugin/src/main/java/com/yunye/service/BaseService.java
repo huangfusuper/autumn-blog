@@ -3,7 +3,7 @@ package com.yunye.service;
 import com.yunye.common.enums.mybatis.MyBatisRunCheckEnum;
 import com.yunye.common.exception.MyBatisToolException;
 import com.yunye.common.utils.ReflectUtils;
-import com.yunye.dao.BaseDao;
+import com.yunye.dao.BaseMapper;
 import com.yunye.help.SqlGenerateHelp;
 import com.yunye.help.criteria.Criteria;
 import org.apache.commons.lang3.StringUtils;
@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
  * 业务操作基类
  * @author huangfu
  */
-public abstract class BaseService<D extends BaseDao> {
+public abstract class BaseService<D extends BaseMapper> {
     private final D dao;
 
     public BaseService(D dao) {

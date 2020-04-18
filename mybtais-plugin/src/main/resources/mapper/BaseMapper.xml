@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.yunye.dao.BaseDao">
+<mapper namespace="com.yunye.dao.BaseMapper">
     <!--全数据查询-->
     <sql id="SELECT_ALL_SQL"> * </sql>
     <!--条件字段拼接-->

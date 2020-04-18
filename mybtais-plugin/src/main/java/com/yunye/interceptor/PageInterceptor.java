@@ -25,7 +25,7 @@ import java.util.List;
  * 分页拦截器
  * @author huangfu
  */
-//@Intercepts(value = {@Signature(type = StatementHandler.class, method = "prepare",args = {Connection.class,Integer.class})})
+@Intercepts(value = {@Signature(type = StatementHandler.class, method = "prepare",args = {Connection.class,Integer.class})})
 public class PageInterceptor implements Interceptor {
     /**
      * 查询类型

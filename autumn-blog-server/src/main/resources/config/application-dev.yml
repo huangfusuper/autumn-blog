@@ -62,7 +62,7 @@ logging:
   file:
     path: /huangfu
   level:
-    root: debug
+    root: info
 
 # token加密的配置
 token:

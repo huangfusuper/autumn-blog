@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <springProperty scope="context" name="logPath" source="logging.file.path" defaultValue="/logs"/>
+    <springProperty scope="context" name="level" source="logging.level.root" defaultValue="DEBUG"/>
+    <!-- 应用名称 -->
+    <property name="PATTERN_FORMAT" value="【AutumnBlog】- %p - %d -[%file:%line\]- %m %n" />
+    <!--标准输出 日期格式已经定义 控制台输出-->
+    <appender name="standard_out" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+    <!--error文件输出-->
+    <appender name="file_error_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logPath}/log/error/error.log</File>
+        <!--每天新生成一个日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/log/error/autumn.error.%d.%i.log</fileNamePattern>
+            <!--保存时间为30天-->
+            <maxHistory>30</maxHistory>
+            <!--基于时间的文件命名和触发策略-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- maxFileSize:这是活动文件的大小，默认值是10MB -->
+                <maxFileSize>1MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>ERROR</level>
+            <level>WARN</level>
+
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--info文件输出-->
+    <appender name="file_info_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logPath}/log/info/info.log</File>
+        <!--每天新生成一个日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/log/info/autumn.info.%d.%i.log</fileNamePattern>
+            <!--保存时间为30天-->
+            <maxHistory>30</maxHistory>
+            <!--基于时间的文件命名和触发策略-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- maxFileSize:这是活动文件的大小，默认值是10MB -->
+                <maxFileSize>5MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+
+        <!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>INFO</level>
+            <onMatch>ACCEPT</onMatch>
+            <onMismatch>DENY</onMismatch>
+        </filter>
+    </appender>
+
+    <!--all文件输出-->
+    <!--info文件输出-->
+    <appender name="file_all_log" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <File>${logPath}/log/all/all.log</File>
+        <!--每天新生成一个日志文件-->
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${logPath}/log/all/autumn.all.%d.%i.log</fileNamePattern>
+            <!--保存时间为30天-->
+            <maxHistory>30</maxHistory>
+            <!--基于时间的文件命名和触发策略-->
+            <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <!-- maxFileSize:这是活动文件的大小，默认值是10MB -->
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+        <encoder>
+            <pattern>${PATTERN_FORMAT}</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+
+        <!-- 追加方式记录日志 -->
+        <append>true</append>
+
+        <!-- 此日志文件只记录error级别的 -->
+        <filter class="ch.qos.logback.classic.filter.LevelFilter">
+            <level>DEBUG</level>
+            <level>info</level>
+            <level>error</level>
+            <level>WARN</level>
+
+        </filter>
+    </appender>
+
+    <!-- 控制台输出日志级别 -->
+    <root name="com.autumn">
+        <level value="${level}" />
+        <appender-ref ref="standard_out" />
+        <appender-ref ref="file_error_log" />
+        <appender-ref ref="file_info_log" />
+        <appender-ref ref="file_all_log" />
+    </root>
+</configuration>

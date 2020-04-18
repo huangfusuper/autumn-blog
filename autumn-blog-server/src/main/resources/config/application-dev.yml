@@ -1,4 +1,43 @@
 spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      driverClassName: com.mysql.cj.jdbc.Driver
+      username: root
+      password: HUANGfu@0110
+      url: jdbc:mysql://192.168.199.163:3306/AutumnBlog?serverTimezone=UTC&useUnicode=true&characterEncoding=UTF-8&allowMultiQueries=true
+      #初始化时建立物理连接的个数。
+      initialSize: 10
+      #最大连接池数量
+      maxActive: 30
+      #最小连接池数量
+      minIdle: 5
+      #获取连接时最大等待时间，单位毫秒
+      maxWait: 3000
+      #用来检测连接是否有效的sql，要求是一个查询语句，常用select 'x'。
+      validationQuery: select 'x'
+      #单位：秒，检测连接是否有效的超时时间。
+      validationQueryTimeout: 3
+      #建议配置为true，不影响性能，并且保证安全性。申请连接的时候检测，如果空闲时间大于timeBetweenEvictionRunsMillis，执行validationQuery检测连接是否有效。
+      testWhileIdle: true
+      #连接保持空闲而不被驱逐的最小时间
+      minEvictableIdleTimeMillis: 50000
+      #属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有：
+      #监控统计用的filter:stat
+      #日志用的filter:log4j
+      #防御sql注入的filter:wall
+      filters: stat,wall,slf4j
+      asyncInit: true
+      #允许清空统计数据
+      resetEnable: true
+      #监控登录的账号密码
+      loginUsername: huangfu
+      loginPassword: huangfu
+      #白名单
+      allow:
+      #黑名单
+      deny:
+
   redis:
     host: 192.168.199.163
     port: 6379
@@ -15,6 +54,15 @@ spring:
         min-idle: 10
         # 连接池最大阻塞等待时间（使用负值表示没有限制）
         max-wait: 3000
+
+mybatis:
+  mapper-locations: classpath*:mapper/*.xml
+
+logging:
+  file:
+    path: /huangfu
+  level:
+    root: debug
 
 # token加密的配置
 token:

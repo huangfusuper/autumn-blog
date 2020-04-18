@@ -25,9 +25,11 @@
             <artifactId>commons-lang3</artifactId>
         </dependency>
 
+        <!-- 快速开发工具 -->
         <dependency>
-            <groupId>com.yunye</groupId>
-            <artifactId>autumn-blog-common</artifactId>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
         </dependency>
+
     </dependencies>
 </project>

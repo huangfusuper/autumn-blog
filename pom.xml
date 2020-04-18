@@ -18,7 +18,6 @@
   <modules>
       <module>autumn-blog-server</module>
     <module>mybtais-plugin</module>
-    <module>autumn-blog-common</module>
   </modules>
 
 
@@ -82,11 +81,7 @@
         <version>${mybatis-version}</version>
       </dependency>
 
-      <dependency>
-        <groupId>com.yunye</groupId>
-        <artifactId>autumn-blog-common</artifactId>
-        <version>${autum-mybatis.common-version}</version>
-      </dependency>
+
 
     </dependencies>
   </dependencyManagement>

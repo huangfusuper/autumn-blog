@@ -4,3 +4,8 @@
 *.iml
 /vcs.xml
 /$PRODUCT_WORKSPACE_FILE$
+
+*.class
+
+/autumn-blog-server/target/
+

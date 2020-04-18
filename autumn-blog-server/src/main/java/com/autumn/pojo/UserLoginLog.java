@@ -14,7 +14,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginLog implements Serializable {
+public class UserLoginLog implements Serializable {
     private Integer id;
     private String address;
     private String os;

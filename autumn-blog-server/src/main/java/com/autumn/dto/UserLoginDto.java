@@ -1,6 +1,6 @@
 package com.autumn.dto;
 
-import com.autumn.pojo.LoginUser;
+import com.autumn.pojo.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -54,7 +54,7 @@ public class UserLoginDto implements Serializable {
     /**
      * 对应的用户详细信息  这个东西是需要每次放到本地缓存里面的
      */
-    private LoginUser loginUser;
+    private User user;
     /**
      * 用户权限的集合
      */

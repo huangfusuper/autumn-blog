@@ -49,7 +49,7 @@ public class RedisCacheUtil {
      * @param <T> 返回对象
      * @return 缓存值
      */
-    public <T> T getCacheObject(String key,Class<T> tClass){
+    public <T> T getCacheObject(String key){
         ValueOperations<String,T> valueOperations = redisTemplate.opsForValue();
         return valueOperations.get(key);
     }

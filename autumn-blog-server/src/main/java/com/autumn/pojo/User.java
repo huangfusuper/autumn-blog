@@ -13,7 +13,7 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class LoginUser implements Serializable {
+public class User implements Serializable {
     private Integer id;
     private String nickName;
     private String userName;

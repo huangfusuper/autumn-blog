@@ -5,9 +5,7 @@ import cn.hutool.http.useragent.UserAgentUtil;
 import com.autumn.common.CommonConstant;
 import com.autumn.dto.IpAddressDto;
 import com.autumn.dto.UserLoginDto;
-import io.jsonwebtoken.JwtBuilder;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -28,8 +26,8 @@ public class TokenUtil {
     @Value("${token.secret}")
     private String secret;
 
-    @Value("${token.name}")
-    private String tokenName;
+    @Value("${token.uid}")
+    private String uId;
 
     @Value("${token.timeout}")
     private Integer timeout;
@@ -60,7 +58,7 @@ public class TokenUtil {
         //创建payload的私有声明
         Map<String, Object> claims = new HashMap<>(1);
         //参数信息
-        claims.put(tokenName, uuidToken);
+        claims.put(uId, uuidToken);
 
         //下面就是在为payload添加各种标准声明和私有声明了
         //这里其实就是new一个JwtBuilder，设置jwt的body
@@ -75,18 +73,32 @@ public class TokenUtil {
                 .setSubject("blog")
                 //设置签名使用的签名算法和签名使用的秘钥
                 .signWith(algorithm, secret);
-        /*if(timeout > 0){
-            long expMillis = thisTimeout + thisTimeout;
-            Date exp = new Date(expMillis);
-            //设置过期时间
-            jwtBuilder.setExpiration(exp);
-        }*/
+        /*
+            if(timeout > 0){
+                long expMillis = thisTimeout + thisTimeout
+                Date exp = new Date(expMillis)
+                //设置过期时间
+                jwtBuilder.setExpiration(exp)
+            }
+        */
         redisCacheUtil.setValue(tokenKey(uuidToken),userLoginDto,timeout, TimeUnit.MINUTES);
         return jwtBuilder.compact();
     }
 
     /**
-     * 校验令牌  自动刷新
+     * 校验token并返回userKey
+     * @param userToken 登录令牌
+     * @return
+     * @throws MalformedJwtException
+     */
+    public String checkTokenReturnUid(String userToken) throws MalformedJwtException {
+        Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(userToken).getBody();
+        String userKeySuffix = body.get(uId, String.class);
+        return CommonConstant.LOGIN_USER_KEY+userKeySuffix;
+    }
+
+    /**
+     * 校验令牌  自动刷新 600000  10分钟
      * @param userLoginDto 登录的实体
      */
     public void verifyToken(UserLoginDto userLoginDto){
@@ -97,14 +109,22 @@ public class TokenUtil {
         }
     }
 
+    /**
+     * 刷新token的过期时间
+     * @param userLoginDto
+     */
     public void refreshToken (UserLoginDto userLoginDto){
         String token = userLoginDto.getToken();
         long loginTime = System.currentTimeMillis();
         userLoginDto.setLoginTime(loginTime);
         userLoginDto.setExpireTime(loginTime + timeout);
-        redisCacheUtil.setValue(tokenKey(token),userLoginDto);
+        redisCacheUtil.setValue(tokenKey(token),userLoginDto,timeout,TimeUnit.MINUTES);
     }
 
+    /**
+     * 设置用户的浏览器标识
+     * @param userLoginDto 登录的数据承载类
+     */
     private void setUserAgent(UserLoginDto userLoginDto){
         //获取浏览器版本标识
         String userAgent = ServletUtil.getUserAgent();
@@ -116,11 +136,10 @@ public class TokenUtil {
         userLoginDto.setOs(parseUserAgent.getOs().getName());
         //获取ip
         String ipAddr = IpUtils.getIpAddr(ServletUtil.getRequest());
-        System.out.println(ipAddr);
-        userLoginDto.setIp(parseUserAgent.getVersion());
+        userLoginDto.setIp(ipAddr);
 
         String address = "未知地域";
-        IpAddressDto ipAddress = IpUtils.getIpAddress(parseUserAgent.getVersion(), appKey);
+        IpAddressDto ipAddress = IpUtils.getIpAddress(ipAddr, appKey);
         if(ipAddress != null){
             //国家
             String country = ipAddress.getCountry();
@@ -135,8 +154,13 @@ public class TokenUtil {
         userLoginDto.setAddress(address);
     }
 
-    private String tokenKey(String uid) {
-        return CommonConstant.LOGIN_USER_KEY+uid;
+    /**
+     * 包装 userKey 与token前缀进行拼接
+     * @param userKey 缓存中用户的key的后缀
+     * @return 缓存key
+     */
+    private String tokenKey(String userKey) {
+        return CommonConstant.LOGIN_USER_KEY+userKey;
     }
 
 }

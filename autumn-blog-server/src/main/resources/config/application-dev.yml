@@ -21,6 +21,7 @@ token:
   secret: 56eL5aSp5piv5LiA5Liq5b6I5aW955qE5a2j6IqCLOaIkeW+iOWWnOasou+8geS4jeWGt+S4jeeDre+8gQ==
   name: loginToken
   timeout: 1800000
+  uid: uId
 
 ip:
   appKey: e24e51fb4f3b91f1059779b9b7c1d543

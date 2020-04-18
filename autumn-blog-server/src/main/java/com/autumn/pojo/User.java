@@ -13,14 +13,11 @@ import java.util.Date;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class User implements Serializable {
-    private Integer id;
+public class User extends BaseEntity {
     private String nickName;
     private String userName;
     private String password;
     private String salt;
     private String email;
     private String address;
-    private Date createTime;
-    private Date updateTime;
 }

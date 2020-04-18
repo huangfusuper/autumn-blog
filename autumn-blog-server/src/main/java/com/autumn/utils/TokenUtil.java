@@ -5,6 +5,7 @@ import cn.hutool.http.useragent.UserAgentUtil;
 import com.autumn.common.CommonConstant;
 import com.autumn.dto.IpAddressDto;
 import com.autumn.dto.UserLoginDto;
+import com.autumn.pojo.User;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -41,8 +42,9 @@ public class TokenUtil {
         this.redisCacheUtil = redisCacheUtil;
     }
 
-    public String genToken(){
+    public String genToken(User user){
         UserLoginDto userLoginDto = new UserLoginDto();
+        userLoginDto.setUser(user);
         long startTime = System.currentTimeMillis();
         userLoginDto.setLoginTime(startTime);
         userLoginDto.setExpireTime(startTime + timeout);

@@ -11,5 +11,5 @@ import lombok.EqualsAndHashCode;
 @Data
 public class Role extends BaseEntity {
     private String name;
-    private String derails;
+    private String details;
 }

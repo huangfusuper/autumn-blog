@@ -3,6 +3,7 @@ package com.autumn.controller;
 import com.alibaba.fastjson.JSONObject;
 import com.autumn.dto.UserLoginDto;
 import com.autumn.pojo.User;
+import com.autumn.service.UserService;
 import com.autumn.utils.RedisCacheUtil;
 import com.autumn.utils.TokenUtil;
 import io.jsonwebtoken.Claims;
@@ -26,21 +27,14 @@ public class TestController {
     @Autowired
     private RedisCacheUtil redisCacheUtil;
 
+    @Autowired
+    private UserService userService;
+
     @RequestMapping("test")
     public UserLoginDto test(){
-        log.error("-------------皇甫科星----");
-        log.debug("-------------皇甫科星----");
-        log.warn("-------------皇甫科星----");
-        log.debug("-------------皇甫科星----");
-        log.debug("-------------皇甫科星----");
-        log.info("-------------皇甫科星----");
-        User user = new User();
-        user.setAddress("河南省");
-        String s1 = tokenUtil.genToken(user);
-        String s = tokenUtil.checkTokenReturnUid(s1);
-
-        JSONObject cacheObject = redisCacheUtil.getCacheObject(s);
-        UserLoginDto userLoginDto = cacheObject.toJavaObject(UserLoginDto.class);
-        return userLoginDto;
+        String login = userService.login("123", "123", "123");
+        String uid = tokenUtil.checkTokenReturnUid(login);
+        JSONObject cacheObject = redisCacheUtil.getCacheObject(uid);
+        return cacheObject.toJavaObject(UserLoginDto.class);
     }
 }

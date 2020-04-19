@@ -101,7 +101,7 @@ public class SqlGenerateHelp {
     private <T> void parseEntity(Class<T> entityClass){
         //Class<?> entityClass = entity.getClass()
         parseEntityTableName(entityClass);
-        Field[] selfFields = entityClass.getDeclaredFields();
+        List<Field> selfFields = ReflectUtils.getAllField(entityClass);
         StringBuilder sb = new StringBuilder();
         for (Field field : selfFields) {
             TableFieldName annotation = field.getAnnotation(TableFieldName.class);

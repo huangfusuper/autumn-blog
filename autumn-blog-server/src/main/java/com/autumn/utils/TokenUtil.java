@@ -81,7 +81,7 @@ public class TokenUtil {
                 jwtBuilder.setExpiration(exp)
             }
         */
-        redisCacheUtil.setValue(tokenKey(uuidToken),userLoginDto,timeout, TimeUnit.MINUTES);
+        redisCacheUtil.setValue(tokenKey(uuidToken),userLoginDto,timeout, TimeUnit.MILLISECONDS);
         return jwtBuilder.compact();
     }
 
@@ -118,7 +118,7 @@ public class TokenUtil {
         long loginTime = System.currentTimeMillis();
         userLoginDto.setLoginTime(loginTime);
         userLoginDto.setExpireTime(loginTime + timeout);
-        redisCacheUtil.setValue(tokenKey(token),userLoginDto,timeout,TimeUnit.MINUTES);
+        redisCacheUtil.setValue(tokenKey(token),userLoginDto,timeout,TimeUnit.MILLISECONDS);
     }
 
     /**

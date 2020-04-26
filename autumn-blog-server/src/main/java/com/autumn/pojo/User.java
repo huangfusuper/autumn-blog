@@ -17,7 +17,8 @@ public class User extends BaseEntity {
     private String nickName;
     private String userName;
     private String password;
-    private String salt;
     private String email;
     private String address;
+    private String signature;
+    private String imageUrl;
 }

@@ -1,5 +1,7 @@
 package com.autumn.utils;
 
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.DigestUtil;
 import cn.hutool.http.HttpUtil;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -76,6 +78,7 @@ public class IpUtils {
     }
 
     public static void main(String[] args) {
-        System.out.println(getHostName());
+        System.out.println(DigestUtil.bcrypt("123456"));
+        System.out.println(DigestUtil.bcryptCheck("123456", "$2a$10$gf2lvq9pwRqRqEhoJtBTYuclh7kQZ4aPoE3/4cA8eneWx4g6e1Ddm"));
     }
 }

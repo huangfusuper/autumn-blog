@@ -1,7 +1,11 @@
 package com.autumn.service.impl;
 
+import cn.hutool.crypto.digest.DigestUtil;
 import com.autumn.dao.UserMapper;
+import com.autumn.dto.LoginDataDto;
 import com.autumn.dto.UserLoginDto;
+import com.autumn.enums.exception.UserExceptionEnum;
+import com.autumn.exceptions.AutumnException;
 import com.autumn.pojo.Permission;
 import com.autumn.pojo.Role;
 import com.autumn.pojo.User;
@@ -55,26 +59,15 @@ public class UserServiceImpl extends BaseService<UserMapper> implements UserServ
     }
 
     @Override
-    public User findUserByUserNameAndPassword(String userName, String password) {
-        SqlGenerateHelp sqlGenerateHelp = new SqlGenerateHelp(User.class);
-        Criteria criteria = sqlGenerateHelp.createCriteria();
-        criteria.andEqualTo("user_name",userName)
-        .andEqualTo("password",password);
-        return super.baseFindOne(sqlGenerateHelp,User.class);
-    }
-
-    @Override
-    public String login(String userName, String password, String code) {
-        User userByUserName = findUserByUserName(userName);
+    public String login(LoginDataDto loginDataDto) {
+        User userByUserName = findUserByUserName(loginDataDto.getUserName());
         if (userByUserName != null) {
-            String salt = userByUserName.getSalt();
-            //TODO 加解密
-            User loginUser = findUserByUserNameAndPassword(userName, password);
-            if(null != loginUser) {
+            boolean successLogin = DigestUtil.bcryptCheck(loginDataDto.getPassword(), userByUserName.getPassword());
+            if(successLogin) {
                 UserLoginDto userLoginDto = new UserLoginDto();
-                userLoginDto.setUser(loginUser);
+                userLoginDto.setUser(userByUserName);
                 //查询对应的角色
-                List<Role> allRoleByUserId = roleService.findAllRoleByUserId(loginUser.getId());
+                List<Role> allRoleByUserId = roleService.findAllRoleByUserId(userByUserName.getId());
                 //查询角色对应的权限
                 //1.筛选出这些角色的id
                 //2.根据角色id in查询权限
@@ -85,6 +78,6 @@ public class UserServiceImpl extends BaseService<UserMapper> implements UserServ
                 return tokenUtil.genToken(userLoginDto);
             }
         }
-        return null;
+        throw new AutumnException(UserExceptionEnum.LOGIN_USERNAME_PASSWORD_ERROR);
     }
 }

@@ -1,5 +1,6 @@
 package com.autumn.service;
 
+import com.autumn.dto.LoginDataDto;
 import com.autumn.pojo.User;
 
 import java.util.List;
@@ -29,20 +30,11 @@ public interface UserService {
      */
     User findUserByUserName(String userName);
 
-    /**
-     * 根据用户名和密码查询
-     * @param userName
-     * @param password
-     * @return
-     */
-    User findUserByUserNameAndPassword(String userName,String password);
 
     /**
      * 登录逻辑
-     * @param userName 用户账号
-     * @param password 用户密码
-     * @param code 验证码
-     * @return
+     * @param loginDataDto 登录数据
+     * @return token
      */
-    String login(String userName,String password,String code);
+    String login(LoginDataDto loginDataDto);
 }

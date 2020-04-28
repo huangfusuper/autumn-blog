@@ -1,7 +1,5 @@
 package com.autumn.advice;
 
-import com.autumn.AutumnResponse;
-import com.autumn.exceptions.AutumnException;
 import com.yunye.common.enums.IEnum;
 import com.yunye.common.exception.IException;
 import org.springframework.web.bind.annotation.ExceptionHandler;

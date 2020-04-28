@@ -3,10 +3,7 @@ package com.autumn.controller;
 import com.autumn.dto.LoginDataDto;
 import com.autumn.service.UserService;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * 登陆逻辑
@@ -14,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 @RequestMapping("admin/user")
+@CrossOrigin
 public class UserController {
     private final UserService userService;
 

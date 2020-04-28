@@ -2,11 +2,13 @@ package com.autumn.utils;
 
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
+import com.alibaba.fastjson.JSONObject;
 import com.autumn.common.CommonConstant;
 import com.autumn.dto.IpAddressDto;
 import com.autumn.dto.UserLoginDto;
 import com.autumn.pojo.User;
 import io.jsonwebtoken.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,7 @@ import java.util.concurrent.TimeUnit;
  * @author huangfu
  */
 @Component
+@Slf4j
 public class TokenUtil {
 
     private final static  Integer REF_TOKEN_TIME = 600000;
@@ -86,32 +89,45 @@ public class TokenUtil {
     }
 
     /**
-     * 校验token并返回userKey
+     * 校验token
      * @param userToken 登录令牌
-     * @return
-     * @throws MalformedJwtException
+     * @return sss
      */
-    public String checkTokenReturnUid(String userToken) throws MalformedJwtException {
-        Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(userToken).getBody();
-        String userKeySuffix = body.get(uId, String.class);
-        return CommonConstant.LOGIN_USER_KEY+userKeySuffix;
+    public boolean checkTokenReturnUid(String userToken)  {
+        try{
+            Claims body = Jwts.parser().setSigningKey(secret).parseClaimsJws(userToken).getBody();
+            String userKeySuffix = body.get(uId, String.class);
+            //获取用户存贮的主键
+            String userKey = CommonConstant.LOGIN_USER_KEY+userKeySuffix;
+            return verifyToken(userKey);
+        }catch (MalformedJwtException malformedJwtException) {
+            log.error("-----------token不存在,{}------------"+malformedJwtException.getMessage());
+        }
+        return false;
     }
 
     /**
      * 校验令牌  自动刷新 600000  10分钟
-     * @param userLoginDto 登录的实体
+     * @param userKey userKey
      */
-    public void verifyToken(UserLoginDto userLoginDto){
-        Long loginTime = userLoginDto.getLoginTime();
-        Long expireTime = userLoginDto.getExpireTime();
-        if(expireTime - loginTime >= REF_TOKEN_TIME){
-            refreshToken(userLoginDto);
+    public boolean verifyToken(String userKey){
+        JSONObject jsonObject = redisCacheUtil.getCacheObject(userKey);
+        if( jsonObject != null){
+            UserLoginDto userLoginDto = jsonObject.toJavaObject(UserLoginDto.class);
+            Long loginTime = userLoginDto.getLoginTime();
+            Long expireTime = userLoginDto.getExpireTime();
+            if(expireTime - loginTime >= REF_TOKEN_TIME){
+                refreshToken(userLoginDto);
+                UserUtil.setUserLogin(userLoginDto);
+                return true;
+            }
         }
+        return false;
     }
 
     /**
      * 刷新token的过期时间
-     * @param userLoginDto
+     * @param userLoginDto 用户对象
      */
     public void refreshToken (UserLoginDto userLoginDto){
         String token = userLoginDto.getToken();

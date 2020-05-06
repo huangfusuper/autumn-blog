@@ -1,5 +1,6 @@
 package com.autumn.dto;
 
+import com.autumn.pojo.LeftMenu;
 import com.autumn.pojo.User;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -58,5 +59,5 @@ public class UserLoginDto implements Serializable {
     /**
      * 用户权限的集合
      */
-    private Set<String> permissions;
+    private Set<LeftMenu> leftMenus;
 }
